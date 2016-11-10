@@ -7,13 +7,11 @@ namespace HoMM.Generators
 {
     public class BfsRoadGenerator : RandomGenerator, ITerrainGenerator
     {
-        private ITerrainGenerator terrainGenerator;
         private TileTerrain roadTile;
 
-        public BfsRoadGenerator(ITerrainGenerator underlyingTerrainGenerator, TileTerrain roadTile, Random random)
+        public BfsRoadGenerator(TileTerrain roadTile, Random random)
             : base(random)
         {
-            terrainGenerator = underlyingTerrainGenerator;
             this.roadTile = roadTile;
         }
         
@@ -23,11 +21,9 @@ namespace HoMM.Generators
                     s => s.Neighborhood.Where(n => n.IsInside(maze.Size) && maze[n] == MazeCell.Empty),
                     s => s.X == maze.Size.X-1 && s.Y == maze.Size.Y-1))
                 .Select(x => x.AboveDiagonal(maze.Size));
-
-            var terrain = terrainGenerator.Construct(maze);
-
+            
             return new ArraySigmaMap<TileTerrain>(maze.Size, 
-                i => road.Contains(i.AboveDiagonal(maze.Size)) ? roadTile : terrain[i]);
+                i => road.Contains(i.AboveDiagonal(maze.Size)) ? roadTile : null);
         }
     }
 }

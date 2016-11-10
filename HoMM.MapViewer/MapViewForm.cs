@@ -28,9 +28,8 @@ namespace HoMM.MapViewer
             
             var gen = new HommMapGenerator(
                 new DiagonalMazeGenerator(r), 
-                new BfsRoadGenerator(
-                    new VoronoiTerrainGenerator(r, TileTerrain.Nature.ToArray()),
-                    TileTerrain.Road, r)
+                new BfsRoadGenerator(TileTerrain.Road, r)
+                    .Over(new VoronoiTerrainGenerator(r, TileTerrain.Nature.ToArray()))
             );
 
             Map map = null;

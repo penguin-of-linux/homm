@@ -64,6 +64,7 @@
     <Compile Include="Generators\Maze\DiagonalMazeGenerator.cs" />
     <Compile Include="Generators\Maze\IMazeGenerator.cs" />
     <Compile Include="Generators\Maze\MazeCell.cs" />
+    <Compile Include="Generators\Terrain\AggregatedTerrainGenerator.cs" />
     <Compile Include="Generators\Terrain\BfsRoadGenerator.cs" />
     <Compile Include="Generators\Terrain\ITerrainGenerator.cs" />
     <Compile Include="Generators\Terrain\VoronoiMap.cs" />
