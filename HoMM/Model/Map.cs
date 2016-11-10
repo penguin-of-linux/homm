@@ -63,9 +63,24 @@ namespace HoMM
                 for (int x = 0; x < width; x++)
                     map[y, x] = MakeTile(x, y, line[x]);
             }
+
+            foreach (var tile in map)
+            {
+                if (tile.tileObject is NeutralArmy)
+                {
+                    var neutralArmy = (NeutralArmy)tile.tileObject;
+                    var neighb = GetNeighbourTiles(neutralArmy.location.X, neutralArmy.location.Y);
+
+                    foreach (var t in neighb)
+                    {
+                        if (t.tileObject is CapturableObject)
+                            neutralArmy.GuardObject((CapturableObject)t.tileObject);
+                    }
+                }
+            }
         }
 
-        public Map(int width, int height, IEnumerable<Tile> tiles) 
+        public Map(int width, int height, IEnumerable<Tile> tiles)
             : this(width, height)
         {
             foreach (var tile in tiles)
@@ -78,7 +93,7 @@ namespace HoMM
             TileObject obj = InitObject(s, new Point(x, y));
             return new Tile(x, y, t, obj);
         }
-        
+
         private TileTerrain InitTerrain(string s)
         {
             return TileTerrain.Parse(s[0]);
@@ -120,17 +135,7 @@ namespace HoMM
                 .SingleOrDefault(res => res[0] == s[2]);
             var unitType = (UnitType)Enum.Parse(typeof(UnitType), monsterTypeName);
             int amount = int.Parse(s.Substring(3).Split('.')[0]);
-            Mine guardedMine = null;
-            if (s.Substring(3).Split('.').Count() > 1)
-            {
-                var coords = s.Substring(3).Split('.')[1];
-                var x = int.Parse(coords.Take(2).ToString());
-                var y = int.Parse(coords.Substring(2));
-                if (!(map[x, y].tileObject is Mine))
-                    throw new ArgumentException("Coords do not");
-                guardedMine = (Mine)map[x, y].tileObject;
-            }
-            return new NeutralArmy(UnitFactory.CreateFromUnitType(unitType), amount, guardedMine, location);
+            return new NeutralArmy(UnitFactory.CreateFromUnitType(unitType), amount, location);
         }
 
         public IEnumerator<Tile> GetEnumerator()
