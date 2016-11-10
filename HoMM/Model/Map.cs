@@ -89,14 +89,14 @@ namespace HoMM
 
         public Tile MakeTile(int x, int y, string s)
         {
-            TileTerrain t = InitTerrain(s);
+            TileTerrain t = InitTerrain(char.ToUpper(s[0]));
             TileObject obj = InitObject(s, new Point(x, y));
             return new Tile(x, y, t, obj);
         }
 
-        private TileTerrain InitTerrain(string s)
+        private TileTerrain InitTerrain(char c)
         {
-            return TileTerrain.Parse(s[0]);
+            return TileTerrain.Parse(c);
         }
 
         private TileObject InitObject(string s, Point location)

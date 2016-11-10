@@ -8,15 +8,8 @@ using System.Text;
 
 namespace HoMM
 {
-    public abstract class CapturableObject : TileObject, INotifyPropertyChanged
+    public abstract class CapturableObject : TileObject
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-                PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
         Player owner;
         public Player Owner
         {

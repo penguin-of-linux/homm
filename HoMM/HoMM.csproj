@@ -76,7 +76,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Model\Resource.cs" />
     <Compile Include="Model\Round.cs" />
-    <Compile Include="Model\Tile\TerrainType.cs" />
     <Compile Include="Model\Tile\Tile.cs" />
     <Compile Include="Model\Tile\TileObjects\Dwelling.cs" />
     <Compile Include="Model\Tile\TileObjects\CapturableObject.cs" />

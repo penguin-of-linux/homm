@@ -26,7 +26,7 @@ namespace HoMM
             return new Unit("Horseman", 35, UnitType.Cavalry,
                 new Dictionary<Resource, int> { [Resource.Rubles] = 200, [Resource.Crystals] = 2 });
         }
-
+        
         public static Unit CreateRanged()
         {
             return new Unit("Archer", 12, UnitType.Ranged,

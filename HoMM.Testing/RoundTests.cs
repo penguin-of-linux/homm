@@ -12,18 +12,31 @@ namespace HexModelTesting
     [TestFixture]
     public class RoundTests
     {
-        [Test]
-        public void ExampleRound()
+        Round round;
+
+        [SetUp]
+        public void PrepareGoodMap()
         {
-            var round = new Round("TestMaps\\goodMap.txt", new string[] { "First", "Second" });
+            round = new Round("TestMaps\\goodMap.txt", new string[] { "First", "Second" });
             round.UpdateTick(new Point[] { new Point(0, 0), new Point(1, 2) });
-            round.UpdateTick(new Point[] { new Point(0, 1), new Point(1, 1) });
+        }
+
+        [Test]
+        public void TestMineCapturing()
+        {
+            round.UpdateTick(new Point[] { new Point(0, 1), new Point(1, 2) });
             var mine = (Mine)round.map[1, 0].tileObject;
             Assert.That(mine.Owner == round.players[0]);
             Assert.That(mine.Resource == Resource.Rubles);
-            Assert.AreEqual(round.players[1].CheckResourceAmount(Resource.Rubles), 100);
             round.DailyTick();
             Assert.AreEqual(round.players[0].CheckResourceAmount(Resource.Rubles), 1000);
+        }
+
+        [Test]
+        public void TestResGathering()
+        {
+            round.UpdateTick(new Point[] { new Point(0, 0), new Point(1, 1) });
+            Assert.That(round.players[1].CheckResourceAmount(Resource.Rubles) == 100);
         }
     }
 }
