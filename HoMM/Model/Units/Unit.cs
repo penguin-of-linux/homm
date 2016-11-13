@@ -4,17 +4,21 @@ namespace HoMM
 {
     public class Unit
     {
-        public readonly string unitName;
-        public readonly int combatStrength;
-        public readonly UnitType unitType;
-        public readonly Dictionary<Resource, int> unitCost;
-
-        public Unit(string unitName, UnitType unitType, int combatStrength, Dictionary<Resource, int> unitCost)
+        public readonly string UnitName;
+        public readonly UnitType UnitType;
+        public int CombatPower
         {
-            this.unitName = unitName;
-            this.combatStrength = combatStrength;
-            this.unitType = unitType;
-            this.unitCost = unitCost;
+            get { return UnitConstants.CombatPower[this.UnitType]; }
+        }
+        public Dictionary<Resource, int> UnitCost
+        {
+            get { return UnitConstants.UnitCost[this.UnitType]; }
+        }
+
+        public Unit(string unitName, UnitType unitType)
+        {
+            this.UnitName = unitName;
+            this.UnitType = unitType;
         }
     }
 }

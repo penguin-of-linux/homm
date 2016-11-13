@@ -52,6 +52,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Model\Combat.cs" />
     <Compile Include="Generators\Common\ISigmaMap.cs" />
     <Compile Include="Generators\Common\MapSize.cs" />
     <Compile Include="Generators\Common\RandomGenerator.cs" />

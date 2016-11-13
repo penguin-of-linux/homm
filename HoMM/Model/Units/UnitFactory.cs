@@ -16,18 +16,15 @@ namespace HoMM
         }
         public static Unit CreateInfantry()
         {
-            return new Unit("Infantryman", UnitType.Infantry, 
-                UnitConstants.CombatPower[UnitType.Infantry], UnitConstants.UnitCost[UnitType.Infantry]);
+            return new Unit("Infantryman", UnitType.Infantry);
         }
         public static Unit CreateRanged()
         {
-            return new Unit("Archer", UnitType.Ranged, 
-                UnitConstants.CombatPower[UnitType.Ranged], UnitConstants.UnitCost[UnitType.Ranged]);
+            return new Unit("Archer", UnitType.Ranged);
         }
         public static Unit CreateCavalry()
         {
-            return new Unit("Horseman", UnitType.Cavalry, 
-                UnitConstants.CombatPower[UnitType.Cavalry], UnitConstants.UnitCost[UnitType.Cavalry]);
+            return new Unit("Horseman", UnitType.Cavalry);
         }
     }
 }
