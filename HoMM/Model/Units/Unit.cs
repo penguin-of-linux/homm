@@ -12,7 +12,7 @@ namespace HoMM
         public readonly UnitType unitType;
         public readonly Dictionary<Resource, int> unitCost;
 
-        public Unit(string unitName, int combatStrength, UnitType unitType, Dictionary<Resource, int> unitCost)
+        public Unit(string unitName, UnitType unitType, int combatStrength, Dictionary<Resource, int> unitCost)
         {
             this.unitName = unitName;
             this.combatStrength = combatStrength;

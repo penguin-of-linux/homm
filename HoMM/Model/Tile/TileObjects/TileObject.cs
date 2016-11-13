@@ -16,7 +16,7 @@ namespace HoMM
                 PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-
+        
         protected TileObject(Point location)
         {
             this.location = location;

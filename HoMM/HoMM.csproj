@@ -73,6 +73,7 @@
     <Compile Include="Generators\Utils\Vector2i.cs" />
     <Compile Include="Model\Map.cs" />
     <Compile Include="Model\Player.cs" />
+    <Compile Include="Model\Units\UnitConstants.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Model\Resource.cs" />
     <Compile Include="Model\Round.cs" />
