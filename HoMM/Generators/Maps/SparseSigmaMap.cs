@@ -29,7 +29,7 @@ namespace HoMM.Generators
             {
                 var cell = cellsFactory(index);
                 
-                if (!cell.Equals(defaultValue))
+                if (cell == null || !cell.Equals(defaultValue))
                     cells.Add(index, cell);
             }
         }
@@ -46,6 +46,27 @@ namespace HoMM.Generators
             TCell defaultValue = default(TCell))
         {
             return new SparseSigmaMap<TCell>(source.Size, i => source[i]);
+        }
+
+        public static SparseSigmaMap<TCell> From<TCell>(MapSize size, 
+            Func<SigmaIndex, TCell> cellsFactory, TCell defaultValue = default(TCell))
+        {
+            return new SparseSigmaMap<TCell>(size, cellsFactory);
+        }
+        
+        public static ISigmaMap<TCell> Merge<TCell>(
+            this ISigmaMap<TCell> bottom, ISigmaMap<TCell> top)
+        {
+            return SparseMerge(bottom, top);
+        }
+
+        public static ISigmaMap<TCell> SparseMerge<TCell>
+            (this ISigmaMap<TCell> bottom, ISigmaMap<TCell> top)
+        {
+            if (bottom.Size != top.Size)
+                throw new ArgumentException("Cannot merge maps of different size");
+
+            return From(bottom.Size, s => top[s] == null ? bottom[s] : top[s]);
         }
     }
 }

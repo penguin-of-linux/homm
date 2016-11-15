@@ -26,14 +26,16 @@ namespace HoMM.MapViewer
             
             var r = new Random();
             
-            var gen = new HommMapGenerator(
-                new DiagonalMazeGenerator(r), 
-                new BfsRoadGenerator(TileTerrain.Road, r)
-                    .Over(new VoronoiTerrainGenerator(r, TileTerrain.Nature.ToArray()))
-            );
+            var gen = HommMapGenerator
+                .From(new DiagonalMazeGenerator(r))
+                .With(new BfsRoadGenerator(r, TileTerrain.Road)
+                    .Over(new VoronoiTerrainGenerator(r, TileTerrain.Nature.ToArray())))
+                .With(new EntitiesGenerator(r, 6, p => new Mine(Resource.Ore, p)))
+                .With(new EntitiesGenerator(r, 6, p => new Mine(Resource.Crystals, p)))
+                .And(new EntitiesGenerator(r, 6, p => new Mine(Resource.Gems, p)));
 
             Map map = null;
-
+            
             var generateButton = new Button { Text = "Generate!", Location = new Point(150, 0) };
 
             var mapSizeBox = new ComboBox();
@@ -68,7 +70,7 @@ namespace HoMM.MapViewer
             g.FillEllipse(brush, (cell.location.X+1) * diameter, (1 + cell.location.Y) * diameter + dy, diameter, diameter);
         }
 
-        Dictionary<TileTerrain, Color> colorMap = new Dictionary<TileTerrain, Color>
+        Dictionary<TileTerrain, Color> terrainColor = new Dictionary<TileTerrain, Color>
         {
             { TileTerrain.Arid, Color.LightGoldenrodYellow },
             { TileTerrain.Desert, Color.LightYellow },
@@ -78,13 +80,23 @@ namespace HoMM.MapViewer
             { TileTerrain.Snow, Color.LightBlue }
         };
 
+        Dictionary<Resource, Color> resourceColor = new Dictionary<Resource, Color>
+        {
+            { Resource.Crystals, Color.Blue },
+            { Resource.Ore, Color.Red },
+            { Resource.Gems, Color.Magenta },
+        };
+
         private Color GetColor(TileObject obj, TileTerrain terrain)
         {
-            if (obj != null)
+            if (obj as Impassable != null)
                 return Color.DarkSlateGray;
 
-            if (colorMap.ContainsKey(terrain))
-                return colorMap[terrain];
+            if (obj as Mine != null)
+                return resourceColor[(obj as Mine).Resource];
+
+            if (terrainColor.ContainsKey(terrain))
+                return terrainColor[terrain];
 
             return Color.Pink;
         }

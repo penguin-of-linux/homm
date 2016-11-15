@@ -56,11 +56,16 @@
     <Compile Include="Generators\Common\MapSize.cs" />
     <Compile Include="Generators\Common\RandomGenerator.cs" />
     <Compile Include="Generators\Common\SigmaIndex.cs" />
+    <Compile Include="Generators\Entities\DistantEntitiesGenerator.cs" />
+    <Compile Include="Generators\Entities\IEntitiesGenerator.cs" />
     <Compile Include="Generators\IMapGenerator.cs" />
     <Compile Include="Generators\MapGenerator.cs" />
+    <Compile Include="Generators\MapGeneratorBuildercs.cs" />
     <Compile Include="Generators\Maps\ArraySigmaMap.cs" />
+    <Compile Include="Generators\Maps\EmptySigmaMap.cs" />
     <Compile Include="Generators\Maps\ImmutableSigmaMap.cs" />
     <Compile Include="Generators\Maps\ModifiedMapWrapper.cs" />
+    <Compile Include="Generators\Maps\SparseSigmaMap.cs" />
     <Compile Include="Generators\Maze\DiagonalMazeGenerator.cs" />
     <Compile Include="Generators\Maze\IMazeGenerator.cs" />
     <Compile Include="Generators\Maze\MazeCell.cs" />

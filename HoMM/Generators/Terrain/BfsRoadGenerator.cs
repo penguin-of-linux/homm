@@ -9,7 +9,7 @@ namespace HoMM.Generators
     {
         private TileTerrain roadTile;
 
-        public BfsRoadGenerator(TileTerrain roadTile, Random random)
+        public BfsRoadGenerator(Random random, TileTerrain roadTile)
             : base(random)
         {
             this.roadTile = roadTile;

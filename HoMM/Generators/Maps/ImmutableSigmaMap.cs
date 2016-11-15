@@ -25,7 +25,7 @@ namespace HoMM.Generators
 
             return new ModifiedMapWrapper<TCell>(this, location, cell);
         }
-
+        
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();

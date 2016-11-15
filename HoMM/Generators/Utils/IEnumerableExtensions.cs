@@ -13,7 +13,7 @@ namespace HoMM.Generators
         public static IEnumerable<SigmaIndex> Clamp(this IEnumerable<SigmaIndex> source, MapSize size)
         {
             return source
-                .Where(index => index.IsInside(size) && !index.IsAboveDiagonal(size));
+                .Where(index => index.IsInside(size) && index.IsAboveDiagonal(size));
         }
         
         /// <summary> Warning: traverse sequence twice! </summary>

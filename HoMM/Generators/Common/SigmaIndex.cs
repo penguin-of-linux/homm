@@ -31,7 +31,7 @@ namespace HoMM.Generators
 
         public bool IsAboveDiagonal(MapSize size)
         {
-            return Y >= size.Y - (float)X / size.X * size.Y - 1;
+            return Y < size.Y - (float)X / size.X * size.Y - 1;
         }
 
         public SigmaIndex AboveDiagonal(MapSize size)

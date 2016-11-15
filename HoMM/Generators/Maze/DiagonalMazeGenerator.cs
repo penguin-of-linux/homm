@@ -22,7 +22,7 @@ namespace HoMM.Generators
         private ImmutableSigmaMap<MazeCell> InitAboveDiagonal(MapSize size)
         {
             // need a local variable here to put it into a closure
-            ImmutableSigmaMap<MazeCell> maze = ArraySigmaMap.Solid(size, _ => MazeCell.Wall);
+            ImmutableSigmaMap<MazeCell> maze = ArraySigmaMap.From(size, _ => MazeCell.Wall);
 
             return Graph.DepthFirstTraverse(new SigmaIndex(0, 0),
 
