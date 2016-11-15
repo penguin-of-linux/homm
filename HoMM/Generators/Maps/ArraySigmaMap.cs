@@ -2,7 +2,7 @@
 
 namespace HoMM.Generators
 {
-    public class ArraySigmaMap<TCell> : ImmutableSigmaMap<TCell>
+    class ArraySigmaMap<TCell> : ImmutableSigmaMap<TCell>
     {
         private TCell[,] cells;
 
@@ -22,20 +22,18 @@ namespace HoMM.Generators
             foreach (var index in SigmaIndex.Square(size))
                 cells[index.Y, index.X] = cellsFactory(index);
         }
+    }
 
-        public static ArraySigmaMap<TCell> Solid(MapSize size, Func<SigmaIndex, TCell> cellsFactory)
+    static class ArraySigmaMap
+    {
+        public static ArraySigmaMap<TCell> Solid<TCell>(MapSize size, Func<SigmaIndex, TCell> cellsFactory)
         {
             return new ArraySigmaMap<TCell>(size, cellsFactory);
         }
 
-        public static ArraySigmaMap<TCell> From(ISigmaMap<TCell> source)
+        public static ArraySigmaMap<TCell> From<TCell>(ISigmaMap<TCell> source)
         {
-            var destination = Solid(source.Size, _ => default(TCell));
-
-            foreach (var index in source)
-                destination.cells[index.Y, index.X] = source[index];
-
-            return destination;
+            return Solid(source.Size, index => source[index]);
         }
     }
 }

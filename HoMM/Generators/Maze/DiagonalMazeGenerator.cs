@@ -9,7 +9,7 @@ namespace HoMM.Generators
 
         public ISigmaMap<MazeCell> Construct(MapSize size)
         {
-            return ArraySigmaMap<MazeCell>
+            return ArraySigmaMap
                 .From(FixConnectivity(SymmetricallyComplete(InitAboveDiagonal(size))));
         }
 
@@ -22,7 +22,7 @@ namespace HoMM.Generators
         private ImmutableSigmaMap<MazeCell> InitAboveDiagonal(MapSize size)
         {
             // need a local variable here to put it into a closure
-            ImmutableSigmaMap<MazeCell> maze = ArraySigmaMap<MazeCell>.Solid(size, _ => MazeCell.Wall);
+            ImmutableSigmaMap<MazeCell> maze = ArraySigmaMap.Solid(size, _ => MazeCell.Wall);
 
             return Graph.DepthFirstTraverse(new SigmaIndex(0, 0),
 
