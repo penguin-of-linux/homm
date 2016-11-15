@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace HoMM.Generators
 {
-    public abstract class ImmutableSigmaMap<TCell> : ISigmaMap<TCell>
+    abstract class ImmutableSigmaMap<TCell> : ISigmaMap<TCell>
     {
         public abstract TCell this[SigmaIndex location] { get; }
         public abstract MapSize Size { get; }
