@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 
 namespace HoMM
 {
     public class Dwelling : CapturableObject
     {
         public Unit Recruit { get; private set; }
-        
-
         public int AvailableUnits { get; private set; }
 
         public Dwelling(Unit unit, Point location, int availableUnits = 0) : base(location)
@@ -22,15 +17,10 @@ namespace HoMM
             AvailableUnits = availableUnits;
         }
 
-        private static Dictionary<UnitType, int> weeklyGrowth = new Dictionary<UnitType, int>
-        {
-            [UnitType.Infantry] = 15,
-            [UnitType.Ranged] = 12,
-            [UnitType.Cavalry] = 6
-        };
+        
         public void AddWeeklyGrowth()
         {
-            AvailableUnits += weeklyGrowth[Recruit.unitType];
+            AvailableUnits += Recruit.WeeklyGrowth;
         }
         public void RemoveBoughtUnits(int amount)
         {

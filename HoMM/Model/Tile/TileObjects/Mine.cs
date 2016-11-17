@@ -1,7 +1,4 @@
-﻿using System;
-using System.ComponentModel;
-using System.Drawing;
-using System.Runtime.CompilerServices;
+﻿using System.Drawing;
 
 namespace HoMM
 {
