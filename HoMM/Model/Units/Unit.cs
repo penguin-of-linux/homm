@@ -1,24 +1,21 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace HoMM
 {
     public class Unit
     {
-        public readonly string UnitName;
-        public readonly UnitType UnitType;
-        public int CombatPower
-        {
-            get { return UnitConstants.CombatPower[this.UnitType]; }
-        }
-        public Dictionary<Resource, int> UnitCost
-        {
-            get { return UnitConstants.UnitCost[this.UnitType]; }
-        }
+        public string UnitName { get; }
+        public UnitType UnitType { get; }
+        public int CombatPower { get { return UnitConstants.CombatPower[UnitType]; } }
+        public int WeeklyGrowth { get { return UnitConstants.WeeklyGrowth[UnitType]; } }
+        public Dictionary<Resource, int> UnitCost { get {return UnitConstants.UnitCost[UnitType]; } }
+        public Dictionary<UnitType, double> CombatModAgainst { get { return UnitConstants.CombatModAgainst[UnitType]; } }
 
         public Unit(string unitName, UnitType unitType)
         {
-            this.UnitName = unitName;
-            this.UnitType = unitType;
+            UnitName = unitName;
+            UnitType = unitType;
         }
     }
 }

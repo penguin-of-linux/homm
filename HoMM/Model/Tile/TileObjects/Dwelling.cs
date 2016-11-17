@@ -20,7 +20,7 @@ namespace HoMM
         
         public void AddWeeklyGrowth()
         {
-            AvailableUnits += UnitConstants.WeeklyGrowth[Recruit.unitType];
+            AvailableUnits += Recruit.WeeklyGrowth;
         }
         public void RemoveBoughtUnits(int amount)
         {

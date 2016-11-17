@@ -90,7 +90,9 @@ namespace HoMM
         {
             TileTerrain t = InitTerrain(char.ToUpper(s[0]));
             TileObject obj = InitObject(s, new Point(x, y));
-            return new Tile(x, y, t, obj);
+            var tile = new Tile(x, y, t, obj);
+            //tile.tileObject.Remove += (o) => tile.tileObject = null;
+            return tile;
         }
 
         private TileTerrain InitTerrain(char c)
@@ -120,6 +122,13 @@ namespace HoMM
                 case 'M':
                     {
                         return CreateNeutralArmyFromString(s, location);
+                    }
+                case 'D':
+                    {
+                        var recriutTypeName = Enum.GetNames(typeof(UnitType))
+                            .SingleOrDefault(res => res[0] == s[2]);
+                        var unitType = (UnitType)Enum.Parse(typeof(UnitType), recriutTypeName);
+                        return new Dwelling(UnitFactory.CreateFromUnitType(unitType), location);
                     }
                 case '-':
                     return null;

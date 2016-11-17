@@ -15,7 +15,7 @@ namespace HoMM
         {
             [UnitType.Infantry] = new Dictionary<Resource, int> { [Resource.Rubles] = 50, [Resource.Ore] = 1 },
             [UnitType.Ranged] = new Dictionary<Resource, int> { [Resource.Rubles] = 50, [Resource.Wood] = 1 },
-            [UnitType.Cavalry] = new Dictionary<Resource, int> { [Resource.Rubles] = 200, [Resource.Crystals] = 2 }
+            [UnitType.Cavalry] = new Dictionary<Resource, int> { [Resource.Rubles] = 200, [Resource.Crystals] = 2, [Resource.Gems] = 2 }
         };
 
         public static Dictionary<UnitType, int> CombatPower = new Dictionary<UnitType, int>
@@ -25,11 +25,12 @@ namespace HoMM
             [UnitType.Cavalry] = 60
         };
 
-        public static Dictionary<UnitType, UnitType> CounteredBy = new Dictionary<UnitType, UnitType>
+        public static Dictionary<UnitType, Dictionary<UnitType, double>> CombatModAgainst = 
+            new Dictionary<UnitType, Dictionary<UnitType, double>>
         {
-            [UnitType.Infantry] = UnitType.Ranged,
-            [UnitType.Ranged] = UnitType.Cavalry,
-            [UnitType.Cavalry] = UnitType.Infantry
+            [UnitType.Infantry] = new Dictionary<UnitType, double> { [UnitType.Ranged] = 0.75, [UnitType.Cavalry] = 1.25 },
+            [UnitType.Ranged] = new Dictionary<UnitType, double> { [UnitType.Cavalry] = 0.75, [UnitType.Infantry] = 1.25 },
+            [UnitType.Cavalry] = new Dictionary<UnitType, double> { [UnitType.Infantry] = 0.75, [UnitType.Ranged] = 1.25 }
         };
     }
 }

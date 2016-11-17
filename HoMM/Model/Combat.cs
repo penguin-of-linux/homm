@@ -9,7 +9,12 @@ namespace HoMM
     {
         public void ResolveRound(KeyValuePair<Unit, int> attacker, KeyValuePair<Unit, int> defender)
         {
-            var attackerDamage = attacker.Key.combatStrength;
+            int attackerDamage = (int)Math.Floor(attacker.Key.CombatPower * attacker.Value 
+                * attacker.Key.CombatModAgainst[defender.Key.UnitType]);
+            int defenderDamage = (int)Math.Floor(defender.Key.CombatPower * defender.Value 
+                * defender.Key.CombatModAgainst[attacker.Key.UnitType]);
+
+            //NOT DONE
         }
     }
 }
