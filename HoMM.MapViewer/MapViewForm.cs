@@ -79,17 +79,24 @@ namespace HoMM.MapViewer
             var voffset = mapSize + 2;
             var hoffset = mapSize + 2;
 
-            var brush = new SolidBrush(GetColor(cell.tileObject, cell.tileTerrain, true, true));
+            var brush = new SolidBrush(GetColor(cell.tileObject, cell.tileTerrain, true, true, true));
             g.FillEllipse(brush, x*diameter,  (y+dy)*diameter, diameter, diameter);
 
-            brush = new SolidBrush(GetColor(cell.tileObject, cell.tileTerrain, false, true));
+            brush = new SolidBrush(GetColor(cell.tileObject, cell.tileTerrain, false, true, false));
             g.FillEllipse(brush, (x+hoffset)*diameter, (y+dy)*diameter, diameter, diameter);
 
-            brush = new SolidBrush(GetColor(cell.tileObject, cell.tileTerrain, false, false));
+            brush = new SolidBrush(GetColor(cell.tileObject, cell.tileTerrain, false, false, true));
             g.FillEllipse(brush, (x+2*hoffset)*diameter, (y+dy)*diameter, diameter, diameter);
 
-            brush = new SolidBrush(GetColor(cell.tileObject, cell.tileTerrain, true, false));
+            brush = new SolidBrush(GetColor(cell.tileObject, cell.tileTerrain, true, false, true));
             g.FillRectangle(brush, x * diameter, (y + voffset) * diameter, diameter, diameter);
+
+            var ind = new SigmaIndex(cell.location.Y, cell.location.X);
+            var size = new MapSize(mapSize, mapSize);
+
+            brush = new SolidBrush(ind.IsBelowDiagonal(size)
+                ? Color.Red : (ind.IsAboveDiagonal(size) ? Color.Green : Color.Gray));
+            g.FillEllipse(brush, (x + hoffset) * diameter, (y + dy + voffset) * diameter, diameter, diameter);
         }
 
         Dictionary<TileTerrain, Color> terrainColor = new Dictionary<TileTerrain, Color>
@@ -110,7 +117,8 @@ namespace HoMM.MapViewer
             { Resource.Gems, Color.Magenta },
         };
 
-        private Color GetColor(TileObject obj, TileTerrain terrain, bool drawObjects, bool drawWalls)
+        private Color GetColor(TileObject obj, TileTerrain terrain, 
+            bool drawObjects, bool drawWalls, bool drawTerrain)
         {
             if (obj as Impassable != null && drawWalls)
                 return Color.DarkSlateGray;
@@ -118,10 +126,10 @@ namespace HoMM.MapViewer
             if (obj as Mine != null && drawObjects)
                 return resourceColor[(obj as Mine).Resource];
 
-            if (terrainColor.ContainsKey(terrain))
+            if (terrainColor.ContainsKey(terrain) && drawTerrain)
                 return terrainColor[terrain];
 
-            return Color.Pink;
+            return Color.Transparent;
         }
     }
 }

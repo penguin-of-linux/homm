@@ -22,7 +22,9 @@ namespace HoMM.Generators
 
         public SigmaIndex DiagonalMirror(MapSize size)
         {
-            return new SigmaIndex(size.Y - Y - 1, size.X - X - 1);
+            return IsOnDiagonal(size) 
+                ? X < size.X / 2 ? this : new SigmaIndex(size.Y - Y - 1, size.X - X - 1)
+                : new SigmaIndex(size.Y - Y - 1, size.X - X - 1);
         }
 
         public bool IsInside(MapSize size)
@@ -33,6 +35,16 @@ namespace HoMM.Generators
         public bool IsAboveDiagonal(MapSize size)
         {
             return Y < size.Y - (float)X / size.X * size.Y - 1;
+        }
+
+        public bool IsBelowDiagonal(MapSize size)
+        {
+            return Y > size.Y - (float)X / size.X * size.Y - 1;
+        }
+
+        public bool IsOnDiagonal(MapSize size)
+        {
+            return !IsAboveDiagonal(size) && !IsBelowDiagonal(size);
         }
 
         public SigmaIndex AboveDiagonal(MapSize size)

@@ -18,7 +18,7 @@ namespace HoMM.Generators
         public ISigmaMap<TileTerrain> Construct(ISigmaMap<MazeCell> maze)
         {
             var voronoiMap = new VoronoiMap<TileTerrain>(maze.Size, terrains, random);
-            return new ArraySigmaMap<TileTerrain>(maze.Size, i => voronoiMap[i.AboveDiagonal(maze.Size)]);
+            return new ArraySigmaMap<TileTerrain>(maze.Size, i => voronoiMap[i]);
         }
     }
 }
