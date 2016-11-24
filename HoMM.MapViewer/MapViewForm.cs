@@ -101,8 +101,8 @@ namespace HoMM.MapViewer
 
         Dictionary<TileTerrain, Color> terrainColor = new Dictionary<TileTerrain, Color>
         {
-            { TileTerrain.Arid, Color.LightGoldenrodYellow },
-            { TileTerrain.Desert, Color.LightYellow },
+            { TileTerrain.Arid, Color.Khaki },
+            { TileTerrain.Desert, Color.LightGoldenrodYellow },
             { TileTerrain.Grass, Color.LightGreen },
             { TileTerrain.Marsh, Color.Pink },
             { TileTerrain.Road, Color.LightGray },
