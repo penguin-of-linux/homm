@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 
 namespace HoMM
 {
@@ -11,7 +10,7 @@ namespace HoMM
         public int Defence { get; private set; }
         private Map map;
         Dictionary<Resource, int> resources;
-        public Point Location { get; set; }
+        public Vector2i Location { get; set; }
         public Dictionary<UnitType, int> Army { get; }
         public bool HasNoArmy
         {

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace HoMM.Generators
+namespace HoMM
 {
-    public static class Graph
+    static class Graph
     {
         public class NodeDistancePair<T>
         {

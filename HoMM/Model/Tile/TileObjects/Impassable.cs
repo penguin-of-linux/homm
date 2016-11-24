@@ -1,10 +1,8 @@
-﻿using System.Drawing;
-
-namespace HoMM
+﻿namespace HoMM
 {
     public class Impassable : TileObject
     {
-        public Impassable(Point location) : base(location)
+        public Impassable(Vector2i location) : base(location)
         {
         }
     }

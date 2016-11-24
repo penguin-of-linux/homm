@@ -42,7 +42,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
@@ -52,6 +51,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\Vector2i.cs" />
     <Compile Include="Model\Combat.cs" />
     <Compile Include="Generators\Common\ISigmaMap.cs" />
     <Compile Include="Generators\Common\MapSize.cs" />
@@ -75,9 +75,8 @@
     <Compile Include="Generators\Terrain\ITerrainGenerator.cs" />
     <Compile Include="Generators\Terrain\VoronoiMap.cs" />
     <Compile Include="Generators\Terrain\VoronoiTerrainGenerator.cs" />
-    <Compile Include="Generators\Utils\Graph.cs" />
-    <Compile Include="Generators\Utils\IEnumerableExtensions.cs" />
-    <Compile Include="Generators\Utils\Vector2i.cs" />
+    <Compile Include="Common\Graph.cs" />
+    <Compile Include="Common\IEnumerableExtensions.cs" />
     <Compile Include="Model\Map.cs" />
     <Compile Include="Model\Player.cs" />
     <Compile Include="Model\Units\UnitConstants.cs" />

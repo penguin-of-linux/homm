@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 
@@ -31,7 +30,7 @@ namespace HoMM.Generators
         public MinDistanceSpawner(
             Random random,
             SpawnerConfig config, 
-            Func<Point, TileObject> factory)
+            Func<Vector2i, TileObject> factory)
             
             : base(random, config, factory,
                   maze => SigmaIndex.Square(maze.Size)
@@ -49,7 +48,7 @@ namespace HoMM.Generators
         public TopologicSpawner(
             Random random, 
             SpawnerConfig config,
-            Func<Point, TileObject> factory)
+            Func<Vector2i, TileObject> factory)
 
             : base(random, config, factory,
                   maze => Graph.BreadthFirstTraverse(SigmaIndex.Zero, s => s.Neighborhood
@@ -65,14 +64,14 @@ namespace HoMM.Generators
     public class RandomSpawner : ISpawner
     {
         private readonly Random random;
-        private readonly Func<Point, TileObject> factory;
+        private readonly Func<Vector2i, TileObject> factory;
         private readonly SpawnerConfig config;
 
         private readonly Func<ISigmaMap<MazeCell>, IEnumerable<SigmaIndex>> getSpawnLocations;
 
         public RandomSpawner(Random random,
             SpawnerConfig config,
-            Func<Point, TileObject> factory,
+            Func<Vector2i, TileObject> factory,
             Func<ISigmaMap<MazeCell>, IEnumerable<SigmaIndex>> spawnLocations)
         {
             this.random = random;

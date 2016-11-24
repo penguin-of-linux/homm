@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 
 namespace HoMM
 {
@@ -8,7 +7,7 @@ namespace HoMM
         public readonly Resource resource;
         public readonly int quantity;
 
-        public ResourcePile(Resource resource, int quantity, Point location) : base(location)
+        public ResourcePile(Resource resource, int quantity, Vector2i location) : base(location)
         {
             if (quantity <= 0)
                 throw new ArgumentException("Cannot create zero or less resources!");

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 
 namespace HoMM
 {
@@ -18,7 +17,7 @@ namespace HoMM
             }
         }
 
-        protected CapturableObject(Point location) : base(location)
+        protected CapturableObject(Vector2i location) : base(location)
         {
             Owner = null;
         }

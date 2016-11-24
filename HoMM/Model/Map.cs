@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 
@@ -89,7 +88,7 @@ namespace HoMM
         public Tile MakeTile(int x, int y, string s)
         {
             TileTerrain t = InitTerrain(char.ToUpper(s[0]));
-            TileObject obj = InitObject(s, new Point(x, y));
+            TileObject obj = InitObject(s, new Vector2i(x, y));
             var tile = new Tile(x, y, t, obj);
             //tile.tileObject.Remove += (o) => tile.tileObject = null;
             return tile;
@@ -100,7 +99,7 @@ namespace HoMM
             return TileTerrain.Parse(c);
         }
 
-        private TileObject InitObject(string s, Point location)
+        private TileObject InitObject(string s, Vector2i location)
         {
             switch (s[1])
             {
@@ -137,7 +136,7 @@ namespace HoMM
             }
         }
 
-        private NeutralArmy CreateNeutralArmyFromString(string s, Point location)
+        private NeutralArmy CreateNeutralArmyFromString(string s, Vector2i location)
         {
             var monsterTypeName = Enum.GetNames(typeof(UnitType))
                 .SingleOrDefault(res => res[0] == s[2]);

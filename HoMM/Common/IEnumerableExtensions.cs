@@ -1,10 +1,11 @@
-﻿using System;
+﻿using HoMM.Generators;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace HoMM.Generators
+namespace HoMM
 {
-    public static class IEnumerableExtensions
+    static class IEnumerableExtensions
     {
         /// <summary>
         /// Yields only indices that are lying inside of a triangle with 

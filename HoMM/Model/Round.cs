@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Drawing;
 
 namespace HoMM
 {
@@ -18,7 +17,7 @@ namespace HoMM
             daysPassed = 0;
         }
 
-        public void UpdateTick(Point[] playerPositions)
+        public void UpdateTick(Vector2i[] playerPositions)
         {
             if (playerPositions.Length != players.Count)
                 throw new ArgumentException("wrong number of player positions!");

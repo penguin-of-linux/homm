@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 
 
-namespace HoMM.Generators
+namespace HoMM
 {
     public class Vector2i
     {
@@ -44,11 +43,6 @@ namespace HoMM.Generators
         public double Dot(Vector2i other)
         {
             return X * other.X + Y * other.Y;
-        }
-
-        public static implicit operator Point(Vector2i vector)
-        {
-            return new Point(vector.X, vector.Y);
         }
 
         #region *** GetHashCode and Equals  ***
