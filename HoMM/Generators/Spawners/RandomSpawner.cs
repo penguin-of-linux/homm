@@ -9,12 +9,12 @@ namespace HoMM.Generators
     public class SpawnerConfig
     {
         public SigmaIndex EmitterLocation { get; }
-        public int StartRadius { get; }
-        public int EndRadius { get; }
+        public double StartRadius { get; }
+        public double EndRadius { get; }
         public double SpawnDensity { get; }
         public double SpawnDistance => 1 / SpawnDensity;
 
-        public SpawnerConfig(SigmaIndex emitter, int startInclusive, int endExclusive, double density)
+        public SpawnerConfig(SigmaIndex emitter, double startInclusive, double endExclusive, double density)
         {
             if (density > 1 || density <= 0)
                 throw new ArgumentException($"{nameof(density)} should be in range (0, 1]");
@@ -55,6 +55,7 @@ namespace HoMM.Generators
                   maze => Graph.BreadthFirstTraverse(SigmaIndex.Zero, s => s.Neighborhood
                         .Clamp(maze.Size)
                         .Where(n => maze[n] == MazeCell.Empty))
+                    .Select((x, i) => new { Distance = i, Node = x.Node })
                     .SkipWhile(x => x.Distance < config.StartRadius)
                     .TakeWhile(x => x.Distance < config.EndRadius)
                     .Select(x => x.Node))
@@ -99,7 +100,25 @@ namespace HoMM.Generators
             }
 
             return SparseSigmaMap.From(maze.Size,
-                s => spawnPoints.Contains(s.AboveDiagonal(maze.Size)) ? factory(s) : null);
+                s => IsSpawnPoint(spawnPoints, s, maze.Size) ? factory(s) : null);
+        }
+
+        private bool IsSpawnPoint(HashSet<SigmaIndex> spawns, SigmaIndex index, MapSize size)
+        {
+            if (!IsBorderIndex(index, size))
+                return spawns.Contains(index.AboveDiagonal(size));
+
+            if (index.X >= size.X / 2.0)
+                return spawns.Contains(index);
+
+            return index.AboveDiagonal(size) == index 
+                ? false
+                : spawns.Contains(index.AboveDiagonal(size));
+        }
+
+        private bool IsBorderIndex(SigmaIndex index, MapSize size)
+        {
+            return index.AboveDiagonal(size).ManhattanDistance(SigmaIndex.Zero) > size.X - 2;
         }
     }
 }
