@@ -63,20 +63,20 @@ namespace HoMM
                     map[y, x] = MakeTile(x, y, line[x]);
             }
 
+            AssignGuardsToCapturableObjs();
+        }
+
+        private void AssignGuardsToCapturableObjs()
+        {
             foreach (var tile in map)
-            {
                 if (tile.tileObject is NeutralArmy)
                 {
                     var neutralArmy = (NeutralArmy)tile.tileObject;
                     var neighb = GetNeighbourTiles(neutralArmy.location.X, neutralArmy.location.Y);
-
                     foreach (var t in neighb)
-                    {
                         if (t.tileObject is CapturableObject)
                             neutralArmy.GuardObject((CapturableObject)t.tileObject);
-                    }
                 }
-            }
         }
 
         public Map(int width, int height, IEnumerable<Tile> tiles)
