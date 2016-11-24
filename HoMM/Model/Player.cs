@@ -7,10 +7,23 @@ namespace HoMM
     public class Player
     {
         public string Name { get; private set; }
+        public int Attack { get; private set; }
+        public int Defence { get; private set; }
         private Map map;
         Dictionary<Resource, int> resources;
-        public Dictionary<UnitType, int> Army { get; }
         public Point Location { get; set; }
+        public Dictionary<UnitType, int> Army { get; }
+        public bool HasNoArmy
+        {
+            get
+            {
+                foreach (var stack in Army)
+                    if (stack.Value > 0)
+                        return false;
+                return true;
+            }
+        }
+
 
         public Player(string name, Map map)
         {
@@ -22,6 +35,14 @@ namespace HoMM
             foreach (UnitType t in Enum.GetValues(typeof(UnitType)))
                 Army.Add(t, 0);
             this.map = map;
+            Attack = 1;
+            Defence = 1;
+        }
+
+        public Player(string name, Map map, int attack, int defence) : this(name, map)
+        {
+            Attack = attack;
+            Defence = defence;
         }
 
         public int CheckResourceAmount(Resource res)
@@ -48,6 +69,7 @@ namespace HoMM
                 throw new ArgumentException("Not enough " + res.ToString() + " to pay " + amount);
             resources[res] -= amount;
         }
+
 
         public void AddUnits(UnitType unitType, int amount)
         {

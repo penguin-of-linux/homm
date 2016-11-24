@@ -9,10 +9,13 @@ namespace HoMM
     {
         public static void ResolveBattle(Player p1, Player p2)
         {
+            double atkDmgMod = (p1.Attack - p2.Defence) * ((p1.Attack - p2.Defence > 0) ? 0.05 : 0.025);
+            double defDmgMod = (p2.Attack - p1.Defence) * ((p2.Attack - p1.Defence > 0) ? 0.05 : 0.025);
+
             while (!p1.HasNoArmy && !p2.HasNoArmy)
             {
-                var p2NewArmy = ResolveTurn(p1, p2);
-                var p1NewArmy = ResolveTurn(p2, p1);
+                var p2NewArmy = ResolveTurn(p1, p2, atkDmgMod);
+                var p1NewArmy = ResolveTurn(p2, p1, defDmgMod);
 
                 foreach (var unitType in p1NewArmy.Keys)
                     p1.Army[unitType] = p1NewArmy[unitType];
@@ -21,7 +24,7 @@ namespace HoMM
             }
         }
 
-        private static Dictionary<UnitType, int> ResolveTurn(Player attacker, Player defender)
+        private static Dictionary<UnitType, int> ResolveTurn(Player attacker, Player defender, double atkDmgMod)
         {
             var tempArmyDef = new Dictionary<UnitType, int>(defender.Army);
             foreach (var attStack in attacker.Army.Where(u => u.Value > 0))
@@ -34,16 +37,16 @@ namespace HoMM
                 if (targets.Count() == 0)
                     return tempArmyDef;
                 var target = targets.First();
-                int kills = ResolveAttack(attStack, new KeyValuePair<UnitType, int>(target, tempArmyDef[target]));
+                int kills = ResolveAttack(attStack, new KeyValuePair<UnitType, int>(target, tempArmyDef[target]), atkDmgMod);
                 tempArmyDef[target] -= kills;
             }
             return tempArmyDef;
         }
 
-        private static int ResolveAttack(KeyValuePair<UnitType, int> attacker, KeyValuePair<UnitType, int> defender)
+        private static int ResolveAttack(KeyValuePair<UnitType, int> attacker, KeyValuePair<UnitType, int> defender, double atkDmgMod)
         {
             double attackerDamage = UnitConstants.CombatPower[attacker.Key] * attacker.Value
-                * UnitConstants.CombatMod[attacker.Key][defender.Key];
+                * UnitConstants.CombatMod[attacker.Key][defender.Key] * atkDmgMod;
             int killedUnits = (int)Math.Floor(attackerDamage / UnitConstants.CombatPower[defender.Key]);
             return Math.Min(killedUnits, defender.Value);
         }
