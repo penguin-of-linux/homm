@@ -35,7 +35,7 @@ namespace HoMM.Generators
                     .Where(x => maze[x] == MazeCell.Empty)
                     .Count() > 2
 
-            ).Aggregate(maze, (m, r) => maze = m.Insert(r, MazeCell.Empty));
+            ).Aggregate(maze, (m, r) => maze = m.Insert(r.Node, MazeCell.Empty));
         }
 
         private ImmutableSigmaMap<MazeCell> FixConnectivity(ImmutableSigmaMap<MazeCell> maze)
@@ -54,7 +54,9 @@ namespace HoMM.Generators
             return Graph.DepthFirstTraverse(new SigmaIndex(0, 0), s => s.Neighborhood
                 .Where(n => n.IsInside(maze.Size))
                 .Where(n => maze[n] == MazeCell.Empty)
-            ).Contains(new SigmaIndex(maze.Size.Y - 1, maze.Size.X - 1));
+            )
+            .Select(x => x.Node)
+            .Contains(new SigmaIndex(maze.Size.Y - 1, maze.Size.X - 1));
         }
     }
 }
