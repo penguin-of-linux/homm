@@ -5,7 +5,6 @@ using System.Text;
 
 using NUnit.Framework;
 using HoMM;
-using System.Drawing;
 
 namespace HexModelTesting
 {
@@ -18,13 +17,13 @@ namespace HexModelTesting
         public void PrepareGoodMap()
         {
             round = new Round("TestMaps\\goodMap.txt", new string[] { "First", "Second" });
-            round.UpdateTick(new Point[] { new Point(0, 0), new Point(2, 1) });
+            round.UpdateTick(new Vector2i[] { new Vector2i(0, 0), new Vector2i(2, 1) });
         }
 
         [Test]
         public void TestMineCapturing()
         {
-            round.UpdateTick(new Point[] { new Point(1, 0), new Point(2, 1) });
+            round.UpdateTick(new Vector2i[] { new Vector2i(1, 0), new Vector2i(2, 1) });
             var mine = (Mine)round.map[1, 0].tileObject;
             Assert.That(mine.Owner == round.players[0]);
             Assert.That(mine.Resource == Resource.Rubles);
@@ -35,7 +34,7 @@ namespace HexModelTesting
         [Test]
         public void TestResGathering()
         {
-            round.UpdateTick(new Point[] { new Point(0, 0), new Point(1, 1) });
+            round.UpdateTick(new Vector2i[] { new Vector2i(0, 0), new Vector2i(1, 1) });
             Assert.That(round.players[1].CheckResourceAmount(Resource.Rubles) == 100);
             //Assert.That(round.map[1, 1].tileObject == null);
         }
@@ -45,7 +44,7 @@ namespace HexModelTesting
         {
             var obj = (CapturableObject)round.map[2, 1].tileObject;
             Assert.That(obj.Owner == round.players[1]);
-            round.UpdateTick(new Point[] { new Point(2, 1), new Point(0, 0) });
+            round.UpdateTick(new Vector2i[] { new Vector2i(2, 1), new Vector2i(0, 0) });
             Assert.That(obj.Owner == round.players[0]);
         }
 
