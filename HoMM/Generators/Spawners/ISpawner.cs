@@ -5,8 +5,8 @@ using System.Text;
 
 namespace HoMM.Generators
 {
-    public interface IEntitiesGenerator
+    public interface ISpawner
     {
-        ISigmaMap<TileObject> SpawnEntities(ISigmaMap<MazeCell> maze);
+        ISigmaMap<TileObject> Spawn(ISigmaMap<MazeCell> maze);
     }
 }

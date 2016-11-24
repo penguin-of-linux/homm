@@ -25,14 +25,20 @@ namespace HoMM.MapViewer
             DoubleBuffered = true;
             
             var r = new Random();
-            
+
+            var easyTier = new SpawnerConfig(SigmaIndex.Zero, 3, 10, 1);
+            var mediumTier = new SpawnerConfig(SigmaIndex.Zero, 3, 100, 1);
+            var hardTier = new SpawnerConfig(SigmaIndex.Zero, 14, 16, 1);
+            var nightmare = new SpawnerConfig(SigmaIndex.Zero, 16, 20, 1);
+
             var gen = HommMapGenerator
                 .From(new DiagonalMazeGenerator(r))
                 .With(new BfsRoadGenerator(r, TileTerrain.Road)
                     .Over(new VoronoiTerrainGenerator(r, TileTerrain.Nature.ToArray())))
-                .With(new EntitiesGenerator(r, 6, p => new Mine(Resource.Ore, p)))
-                .With(new EntitiesGenerator(r, 6, p => new Mine(Resource.Crystals, p)))
-                .And(new EntitiesGenerator(r, 6, p => new Mine(Resource.Gems, p)));
+                .With(new TopologicSpawner(r, mediumTier, p => new Mine(Resource.Crystals, p)))
+                .With(new MinDistanceSpawner(r, hardTier, p => new Mine(Resource.Ore, p)))
+                .With(new TopologicSpawner(r, easyTier, p => new Mine(Resource.Rubles, p)))
+                .And(new MinDistanceSpawner(r, nightmare, p => new Mine(Resource.Gems, p)));
 
             Map map = null;
             
@@ -61,7 +67,7 @@ namespace HoMM.MapViewer
                         DrawTile(tile, e.Graphics);
             };
         }
-
+        
         private void DrawTile(Tile cell, Graphics g)
         {
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
@@ -82,6 +88,7 @@ namespace HoMM.MapViewer
 
         Dictionary<Resource, Color> resourceColor = new Dictionary<Resource, Color>
         {
+            { Resource.Rubles, Color.Green },
             { Resource.Crystals, Color.Blue },
             { Resource.Ore, Color.Red },
             { Resource.Gems, Color.Magenta },

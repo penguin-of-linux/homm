@@ -36,7 +36,7 @@ namespace HoMM.Generators
         {
             IMazeGenerator mazeGenerator;
             ITerrainGenerator terrainGenerator;
-            List<IEntitiesGenerator> entitiesGenerators = new List<IEntitiesGenerator>();
+            List<ISpawner> entitiesGenerators = new List<ISpawner>();
 
             internal BuilderOnSelectEntities(
                 IMazeGenerator mazeGenerator, ITerrainGenerator terrainGenerator)
@@ -45,13 +45,13 @@ namespace HoMM.Generators
                 this.terrainGenerator = terrainGenerator;
             }
             
-            public BuilderOnSelectEntities With(IEntitiesGenerator entitiesGenerator)
+            public BuilderOnSelectEntities With(ISpawner entitiesGenerator)
             {
                 entitiesGenerators.Add(entitiesGenerator);
                 return this;
             }
 
-            public HommMapGenerator And(IEntitiesGenerator entitiesGenerator)
+            public HommMapGenerator And(ISpawner entitiesGenerator)
             {
                 With(entitiesGenerator);
                 return new HommMapGenerator(mazeGenerator, terrainGenerator, 

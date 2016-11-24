@@ -9,12 +9,12 @@ namespace HoMM.Generators
     {
         IMazeGenerator mazeGenerator;
         ITerrainGenerator terrainGenerator;
-        IEntitiesGenerator[] entitiesGenerators;
+        ISpawner[] entitiesGenerators;
 
         private HommMapGenerator(
             IMazeGenerator mazeGenerator, 
             ITerrainGenerator terrainGenerator,
-            params IEntitiesGenerator[] entitiesGenerators)
+            params ISpawner[] entitiesGenerators)
         {
             if (mazeGenerator == null)
                 throw new InvalidOperationException("should select one IMazeGenerator");
@@ -42,7 +42,7 @@ namespace HoMM.Generators
 
             var entities = entitiesGenerators
                 .Aggregate(SigmaMap.Empty<TileObject>(maze.Size), 
-                (m, g) => m.Merge(g.SpawnEntities(maze)));
+                (m, g) => m.Merge(g.Spawn(maze)));
 
             var tiles = SigmaIndex.Square(mapSize)
                 .Select(s => new Tile(s.X, s.Y, terrainMap[s],

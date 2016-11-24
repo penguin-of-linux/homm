@@ -5,7 +5,12 @@ namespace HoMM.Generators
 {
     public class DiagonalMazeGenerator : RandomGenerator, IMazeGenerator
     {
-        public DiagonalMazeGenerator(Random random) : base(random) { }
+        private int emptyNeighborhood;
+
+        public DiagonalMazeGenerator(Random random, int emptyNeighborhood=3) : base(random)
+        {
+            this.emptyNeighborhood = emptyNeighborhood;
+        }
 
         public ISigmaMap<MazeCell> Construct(MapSize size)
         {
@@ -33,7 +38,7 @@ namespace HoMM.Generators
                 s => s.Neighborhood
                     .Clamp(size)
                     .Where(x => maze[x] == MazeCell.Empty)
-                    .Count() > 2
+                    .Count() > emptyNeighborhood
 
             ).Aggregate(maze, (m, r) => maze = m.Insert(r.Node, MazeCell.Empty));
         }
