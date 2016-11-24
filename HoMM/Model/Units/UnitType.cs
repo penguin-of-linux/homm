@@ -4,6 +4,7 @@
     {
         Infantry,
         Ranged,
-        Cavalry
+        Cavalry,
+        Militia
     }
 }
