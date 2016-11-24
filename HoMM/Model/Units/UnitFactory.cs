@@ -11,6 +11,7 @@ namespace HoMM
                 case "Infantry": return CreateInfantry();
                 case "Ranged": return CreateRanged();
                 case "Cavalry": return CreateCavalry();
+                case "Militia": return CreateMilitia();
                 default: throw new ArgumentException("Unsupported unit type!");
             }
         }
@@ -25,6 +26,11 @@ namespace HoMM
         public static Unit CreateCavalry()
         {
             return new Unit("Horseman", UnitType.Cavalry);
+        }
+
+        public static Unit CreateMilitia()
+        {
+            return new Unit("Militiaman", UnitType.Militia);
         }
     }
 }
