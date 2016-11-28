@@ -38,13 +38,13 @@
     <Reference Include="nunitlite, Version=3.4.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CombatTests.cs" />
     <Compile Include="MapTests.cs" />
     <Compile Include="PlayerTests.cs" />
     <Compile Include="RoundTests.cs" />

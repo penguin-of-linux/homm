@@ -14,27 +14,36 @@ namespace HoMM.MapViewer
 {
     public partial class MapViewForm : Form
     {
-        int diameter = 30;
+        int diameter = 16;
+        int mapSize = 18;
         
         public MapViewForm()
         {
             InitializeComponent();
             
-            Size = new Size(620, 650);
+            Size = new Size(1000, 700);
+            WindowState = FormWindowState.Maximized;
 
             DoubleBuffered = true;
             
             var r = new Random();
-            
-            var gen = new HommMapGenerator(
-                new DiagonalMazeGenerator(r), 
-                new BfsRoadGenerator(
-                    new VoronoiTerrainGenerator(r, TileTerrain.Nature.ToArray()),
-                    TileTerrain.Road, r)
-            );
+
+            var easyTier = new SpawnerConfig(SigmaIndex.Zero, 3, 30, 0.5);
+            var mediumTier = new SpawnerConfig(SigmaIndex.Zero, 30, 1000, 0.5);
+            var hardTier = new SpawnerConfig(SigmaIndex.Zero, 14, 16, 0.5);
+            var nightmare = new SpawnerConfig(SigmaIndex.Zero, 16.5, 20, 0.5);
+
+            var gen = HommMapGenerator
+                .From(new DiagonalMazeGenerator(r))
+                .With(new BfsRoadGenerator(r, TileTerrain.Road)
+                    .Over(new VoronoiTerrainGenerator(r, TileTerrain.Nature.ToArray())))
+                .With(new TopologicSpawner(r, mediumTier, p => new Mine(Resource.Crystals, p)))
+                .With(new MinDistanceSpawner(r, hardTier, p => new Mine(Resource.Ore, p)))
+                .With(new TopologicSpawner(r, easyTier, p => new Mine(Resource.Rubles, p)))
+                .And(new MinDistanceSpawner(r, nightmare, p => new Mine(Resource.Gems, p)));
 
             Map map = null;
-
+            
             var generateButton = new Button { Text = "Generate!", Location = new Point(150, 0) };
 
             var mapSizeBox = new ComboBox();
@@ -46,7 +55,7 @@ namespace HoMM.MapViewer
 
             generateButton.Click += (s, e) =>
             {
-                var mapSize = (int)mapSizeBox.SelectedItem;
+                mapSize = (int)mapSizeBox.SelectedItem;
                 map = gen.GenerateMap(mapSize);
                 this.Invalidate();
             };
@@ -60,34 +69,67 @@ namespace HoMM.MapViewer
                         DrawTile(tile, e.Graphics);
             };
         }
-
+        
         private void DrawTile(Tile cell, Graphics g)
         {
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-            var brush = new SolidBrush(GetColor(cell.tileObject, cell.tileTerrain));
-            var dy = cell.location.X % 2 * diameter / 2;
-            g.FillEllipse(brush, (cell.location.X+1) * diameter, (1 + cell.location.Y) * diameter + dy, diameter, diameter);
+            var dy = cell.location.X % 2 * 0.5f;
+            var x = (cell.location.X + 4);
+            var y = (cell.location.Y + 4);
+            var voffset = mapSize + 2;
+            var hoffset = mapSize + 2;
+
+            var brush = new SolidBrush(GetColor(cell.tileObject, cell.tileTerrain, true, true, true));
+            g.FillEllipse(brush, x*diameter,  (y+dy)*diameter, diameter, diameter);
+
+            brush = new SolidBrush(GetColor(cell.tileObject, cell.tileTerrain, false, true, false));
+            g.FillEllipse(brush, (x+hoffset)*diameter, (y+dy)*diameter, diameter, diameter);
+
+            brush = new SolidBrush(GetColor(cell.tileObject, cell.tileTerrain, false, false, true));
+            g.FillEllipse(brush, (x+2*hoffset)*diameter, (y+dy)*diameter, diameter, diameter);
+
+            brush = new SolidBrush(GetColor(cell.tileObject, cell.tileTerrain, true, false, true));
+            g.FillRectangle(brush, x * diameter, (y + voffset) * diameter, diameter, diameter);
+
+            var ind = new SigmaIndex(cell.location.Y, cell.location.X);
+            var size = new MapSize(mapSize, mapSize);
+
+            brush = new SolidBrush(ind.IsBelowDiagonal(size)
+                ? Color.Red : (ind.IsAboveDiagonal(size) ? Color.Green : Color.Gray));
+            g.FillEllipse(brush, (x + hoffset) * diameter, (y + dy + voffset) * diameter, diameter, diameter);
         }
 
-        Dictionary<TileTerrain, Color> colorMap = new Dictionary<TileTerrain, Color>
+        Dictionary<TileTerrain, Color> terrainColor = new Dictionary<TileTerrain, Color>
         {
-            { TileTerrain.Arid, Color.LightGoldenrodYellow },
-            { TileTerrain.Desert, Color.LightYellow },
+            { TileTerrain.Arid, Color.Khaki },
+            { TileTerrain.Desert, Color.LightGoldenrodYellow },
             { TileTerrain.Grass, Color.LightGreen },
             { TileTerrain.Marsh, Color.Pink },
             { TileTerrain.Road, Color.LightGray },
             { TileTerrain.Snow, Color.LightBlue }
         };
 
-        private Color GetColor(TileObject obj, TileTerrain terrain)
+        Dictionary<Resource, Color> resourceColor = new Dictionary<Resource, Color>
         {
-            if (obj != null)
+            { Resource.Rubles, Color.Green },
+            { Resource.Crystals, Color.Blue },
+            { Resource.Ore, Color.Red },
+            { Resource.Gems, Color.Magenta },
+        };
+
+        private Color GetColor(TileObject obj, TileTerrain terrain, 
+            bool drawObjects, bool drawWalls, bool drawTerrain)
+        {
+            if (obj as Impassable != null && drawWalls)
                 return Color.DarkSlateGray;
 
-            if (colorMap.ContainsKey(terrain))
-                return colorMap[terrain];
+            if (obj as Mine != null && drawObjects)
+                return resourceColor[(obj as Mine).Resource];
 
-            return Color.Pink;
+            if (terrainColor.ContainsKey(terrain) && drawTerrain)
+                return terrainColor[terrain];
+
+            return Color.Transparent;
         }
     }
 }

@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace HoMM.Generators
 {
-    public abstract class ImmutableSigmaMap<TCell> : ISigmaMap<TCell>
+    abstract class ImmutableSigmaMap<TCell> : ISigmaMap<TCell>
     {
         public abstract TCell this[SigmaIndex location] { get; }
         public abstract MapSize Size { get; }
@@ -25,7 +25,7 @@ namespace HoMM.Generators
 
             return new ModifiedMapWrapper<TCell>(this, location, cell);
         }
-
+        
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();

@@ -1,18 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Drawing;
 
 namespace HoMM
 {
     public class Player
     {
         public string Name { get; private set; }
+        public int Attack { get; private set; }
+        public int Defence { get; private set; }
         private Map map;
         Dictionary<Resource, int> resources;
-        Dictionary<Unit, int> army;
-        public Point Location { get; set; }
+        public Vector2i Location { get; set; }
+        public Dictionary<UnitType, int> Army { get; }
+        public bool HasNoArmy
+        {
+            get
+            {
+                foreach (var stack in Army)
+                    if (stack.Value > 0)
+                        return false;
+                return true;
+            }
+        }
+
 
         public Player(string name, Map map)
         {
@@ -20,8 +30,18 @@ namespace HoMM
             resources = new Dictionary<Resource, int>();
             foreach (Resource res in Enum.GetValues(typeof(Resource)))
                 resources.Add(res, 0);
-            army = new Dictionary<Unit, int>();
+            Army = new Dictionary<UnitType, int>();
+            foreach (UnitType t in Enum.GetValues(typeof(UnitType)))
+                Army.Add(t, 0);
             this.map = map;
+            Attack = 1;
+            Defence = 1;
+        }
+
+        public Player(string name, Map map, int attack, int defence) : this(name, map)
+        {
+            Attack = attack;
+            Defence = defence;
         }
 
         public int CheckResourceAmount(Resource res)
@@ -49,27 +69,30 @@ namespace HoMM
             resources[res] -= amount;
         }
 
-        public void AddUnits(Unit unit, int amount)
+
+        public void AddUnits(UnitType unitType, int amount)
         {
-            if (!army.ContainsKey(unit))
-                army.Add(unit, 0);
-            army[unit] += amount;
+            if (!Army.ContainsKey(unitType))
+                Army.Add(unitType, 0);
+            Army[unitType] += amount;
         }
 
         public bool TryBuyUnits(int unitsToBuy)
         {
+            if (unitsToBuy <= 0)
+                throw new ArgumentException("Buy positive amounts of units!");
             if (!(map[Location.X, Location.Y].tileObject is Dwelling))
                 return false;
 
             var d = (Dwelling)map[Location.X, Location.Y].tileObject;
             if (d.AvailableUnits < unitsToBuy)
                 return false;
-            foreach (var kvp in d.Recruit.unitCost)
+            foreach (var kvp in d.Recruit.UnitCost)
                 if (CheckResourceAmount(kvp.Key) < kvp.Value * unitsToBuy)
                     return false;
-            foreach (var kvp in d.Recruit.unitCost)
+            foreach (var kvp in d.Recruit.UnitCost)
                 PayResources(kvp.Key, kvp.Value * unitsToBuy);
-            AddUnits(d.Recruit, unitsToBuy);
+            AddUnits(d.Recruit.UnitType, unitsToBuy);
             return true;
         }
 

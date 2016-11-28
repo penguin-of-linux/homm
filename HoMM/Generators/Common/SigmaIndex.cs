@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace HoMM.Generators
 {
@@ -21,7 +22,9 @@ namespace HoMM.Generators
 
         public SigmaIndex DiagonalMirror(MapSize size)
         {
-            return new SigmaIndex(size.Y - Y - 1, size.X - X - 1);
+            return IsOnDiagonal(size) 
+                ? X < size.X / 2 ? this : new SigmaIndex(size.Y - Y - 1, size.X - X - 1)
+                : new SigmaIndex(size.Y - Y - 1, size.X - X - 1);
         }
 
         public bool IsInside(MapSize size)
@@ -31,7 +34,17 @@ namespace HoMM.Generators
 
         public bool IsAboveDiagonal(MapSize size)
         {
-            return Y >= size.Y - (float)X / size.X * size.Y - 1;
+            return Y < size.Y - (float)X / size.X * size.Y - 1;
+        }
+
+        public bool IsBelowDiagonal(MapSize size)
+        {
+            return Y > size.Y - (float)X / size.X * size.Y - 1;
+        }
+
+        public bool IsOnDiagonal(MapSize size)
+        {
+            return !IsAboveDiagonal(size) && !IsBelowDiagonal(size);
         }
 
         public SigmaIndex AboveDiagonal(MapSize size)
@@ -44,6 +57,20 @@ namespace HoMM.Generators
             for (int y = 0; y < size.Y; ++y)
                 for (int x = 0; x < size.X; ++x)
                     yield return new SigmaIndex(y, x);
+        }
+
+        public double EuclideanDistance(SigmaIndex other)
+        {
+            var thisFixY = Y + 0.5 * (X % 2);
+            var otherFixY = other.Y + 0.5 * (other.X % 2);
+            return Math.Sqrt(Math.Pow(X-other.X, 2) + Math.Pow(thisFixY-otherFixY, 2));
+        }
+
+        public double ManhattanDistance(SigmaIndex other)
+        {
+            var thisFixY = Y + 0.5 * (X % 2);
+            var otherFixY = other.Y + 0.5 * (other.X % 2);
+            return Math.Abs(X-other.X) + Math.Abs(thisFixY-otherFixY);
         }
     }
 }

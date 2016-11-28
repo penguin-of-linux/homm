@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using System.Drawing;
 using HoMM;
 using NUnit.Framework;
 
@@ -47,7 +46,7 @@ namespace HexModelTesting
             Assert.AreEqual(m.Width, 5);
             var tiles = m.GetNeighbourTiles(4, 5);
             Assert.AreEqual(tiles.Count, 3);
-            var expected = new List<Point> { new Point(3, 4), new Point(3, 5), new Point(4, 4) };
+            var expected = new List<Vector2i> { new Vector2i(3, 4), new Vector2i(3, 5), new Vector2i(4, 4) };
             CollectionAssert.AreEquivalent(tiles.Select(t => t.location), expected);
         }
 

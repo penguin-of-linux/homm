@@ -1,22 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
 
 namespace HoMM
 {
-    public abstract class CapturableObject : TileObject, INotifyPropertyChanged
+    public abstract class CapturableObject : TileObject
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-                PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
         Player owner;
         public Player Owner
         {
@@ -30,7 +17,7 @@ namespace HoMM
             }
         }
 
-        protected CapturableObject(Point location) : base(location)
+        protected CapturableObject(Vector2i location) : base(location)
         {
             Owner = null;
         }

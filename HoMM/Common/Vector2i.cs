@@ -4,19 +4,21 @@ using System.Linq;
 using System.Text;
 
 
-namespace HoMM.Generators
+namespace HoMM
 {
     public class Vector2i
     {
         public int X { get; private set; }
         public int Y { get; private set; }
         
+        public double Length { get { return Math.Sqrt(Dot(this)); } }
+
         public Vector2i(int x, int y)
         {
             X = x;
             Y = y;
         }
-        
+
         public static Vector2i operator +(Vector2i first, Vector2i second)
         {
             return new Vector2i(first.X + second.X, first.Y + second.Y);
@@ -29,7 +31,7 @@ namespace HoMM.Generators
 
         public double EuclideanDistance(Vector2i other)
         {
-            return Math.Sqrt(Dot(this - other));
+            return (this - other).Length;
         }
 
         public double ManhattanDistance(Vector2i other)
@@ -57,6 +59,24 @@ namespace HoMM.Generators
                 return X == other.X && Y == other.Y;
 
             return false;
+        }
+        #endregion
+
+        #region *** Equality operators ***
+        public static bool operator ==(Vector2i first, Vector2i second)
+        {
+            if (object.ReferenceEquals(first, second))
+                return true;
+            
+            if (((object)first == null) || ((object)second == null))
+                return false;
+
+            return first.Equals(second);
+        }
+
+        public static bool operator !=(Vector2i first, Vector2i second)
+        {
+            return !(first == second);
         }
         #endregion
     }

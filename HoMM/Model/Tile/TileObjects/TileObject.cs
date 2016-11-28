@@ -1,14 +1,22 @@
 ﻿using System;
-using System.Drawing;
+using System.ComponentModel;
 
 namespace HoMM
 {
-    public abstract class TileObject
+    public abstract class TileObject: INotifyPropertyChanged
     {
         public string unityID;
-        public readonly Point location;
+        public readonly Vector2i location;
 
-        protected TileObject(Point location)
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+                PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        
+        protected TileObject(Vector2i location)
         {
             this.location = location;
         }

@@ -2,11 +2,23 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace HoMM.Generators
+namespace HoMM
 {
-    public static class Graph
+    static class Graph
     {
-        public static IEnumerable<T> DepthFirstTraverse<T>(
+        public class NodeDistancePair<T>
+        {
+            public int Distance { get; }
+            public T Node { get; }
+
+            public NodeDistancePair(T node, int distance)
+            {
+                Node = node;
+                Distance = distance;
+            }
+        }
+
+        public static IEnumerable<NodeDistancePair<T>> DepthFirstTraverse<T>(
             T start,
             Func<T, IEnumerable<T>> neighborhood,
             Func<T, bool> skip = null)
@@ -17,7 +29,7 @@ namespace HoMM.Generators
                 new Dictionary<T, T>(), start, neighborhood, t => false, skip);
         }
 
-        public static IEnumerable<T> BreadthFirstTraverse<T>(
+        public static IEnumerable<NodeDistancePair<T>> BreadthFirstTraverse<T>(
             T start,
             Func<T, IEnumerable<T>> neighborhood,
             Func<T, bool> skip = null)
@@ -38,7 +50,7 @@ namespace HoMM.Generators
             var parent = new Dictionary<T, T>();
 
             var last = Traverse(t => stack.Push(t), () => stack.Pop(), () => stack.Count == 0,
-                parent, start, neighborhood, end, skip).Last();
+                parent, start, neighborhood, end, skip).Last().Node;
 
             return end(last) ? Trace(parent, last) : Enumerable.Empty<T>();
         }
@@ -53,7 +65,7 @@ namespace HoMM.Generators
             var parent = new Dictionary<T, T>();
 
             var last = Traverse(t => queue.Enqueue(t), () => queue.Dequeue(), () => queue.Count == 0,
-                parent, start, neighborhood, end, skip).Last();
+                parent, start, neighborhood, end, skip).Last().Node;
 
             return end(last) ? Trace(parent, last) : Enumerable.Empty<T>();
         }
@@ -68,16 +80,19 @@ namespace HoMM.Generators
             }
         }
 
-        private static IEnumerable<T> Traverse<T>(Action<T> push, Func<T> pop, Func<bool> empty, 
+        private static IEnumerable<NodeDistancePair<T>> Traverse<T>(Action<T> push, Func<T> pop, Func<bool> empty, 
             Dictionary<T, T> parent,
             T start,
             Func<T, IEnumerable<T>> neighborhood,
             Func<T, bool> end,
             Func<T, bool> skip = null)
         {
+            var distances = new Dictionary<T, int>();
+
             push(start);
             parent[start] = default(T);
-
+            distances[start] = 0;
+            
             while (!empty())
             {
                 var current = pop();
@@ -89,10 +104,11 @@ namespace HoMM.Generators
                     .Where(n => !parent.ContainsKey(n)))
                 {
                     parent[neighbour] = current;
+                    distances[neighbour] = distances[current] + 1;
                     push(neighbour);
                 }
                 
-                yield return current;
+                yield return new NodeDistancePair<T>(current, distances[current]);
 
                 if (end(current)) yield break;
             }

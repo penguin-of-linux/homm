@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Drawing;
 
 namespace HoMM
 {
@@ -19,14 +17,14 @@ namespace HoMM
             daysPassed = 0;
         }
 
-        public void UpdateTick(Point[] playerPositions)
+        public void UpdateTick(Vector2i[] playerPositions)
         {
             if (playerPositions.Length != players.Count)
                 throw new ArgumentException("wrong number of player positions!");
             for (int i = 0; i < players.Count; i++)
             {
                 players[i].Location = playerPositions[i];
-                var currentTile = map[playerPositions[i].Y, playerPositions[i].X];
+                var currentTile = map[playerPositions[i].X, playerPositions[i].Y];
                 if (currentTile.tileObject == null)
                     continue;
                 else

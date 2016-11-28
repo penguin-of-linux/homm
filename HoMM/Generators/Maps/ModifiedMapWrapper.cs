@@ -1,6 +1,6 @@
 ﻿namespace HoMM.Generators
 {
-    class ModifiedMapWrapper<TCell> : ImmutableSigmaMap<TCell>
+    sealed class ModifiedMapWrapper<TCell> : ImmutableSigmaMap<TCell>
     {
         public ISigmaMap<TCell> ParentMaze { get; private set; }
         public SigmaIndex ModifiedLocation { get; private set; }

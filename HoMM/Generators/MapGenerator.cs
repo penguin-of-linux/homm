@@ -1,19 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 
 namespace HoMM.Generators
 {
-    public class HommMapGenerator : IMapGenerator
+    public partial class HommMapGenerator : IMapGenerator
     {
-        IMazeGenerator mazeGen;
-        ITerrainGenerator terrainGen;
+        IMazeGenerator mazeGenerator;
+        ITerrainGenerator terrainGenerator;
+        ISpawner[] entitiesGenerators;
 
-        public HommMapGenerator(IMazeGenerator mazeGenerator, ITerrainGenerator terrainGenerator)
+        private HommMapGenerator(
+            IMazeGenerator mazeGenerator, 
+            ITerrainGenerator terrainGenerator,
+            params ISpawner[] entitiesGenerators)
         {
-            mazeGen = mazeGenerator;
-            terrainGen = terrainGenerator;
+            if (mazeGenerator == null)
+                throw new InvalidOperationException("should select one IMazeGenerator");
+
+            if (terrainGenerator == null)
+                throw new InvalidOperationException("should select one ITerrainGenerator");
+
+            this.mazeGenerator = mazeGenerator;
+            this.terrainGenerator = terrainGenerator;
+            this.entitiesGenerators = entitiesGenerators;
         }
 
         public Map GenerateMap(int size)
@@ -26,21 +36,18 @@ namespace HoMM.Generators
 
             var mapSize = new MapSize(size, size);
 
-            var maze = mazeGen.Construct(mapSize);
-            var terrainMap = terrainGen.Construct(maze);
+            var maze = mazeGenerator.Construct(mapSize);
+            var terrainMap = terrainGenerator.Construct(maze);
 
-            return new Map(size, size, SigmaIndex.Square(mapSize)
-                .Select(s => new Tile(
-                    s.X, s.Y, 
-                    terrainMap[s], 
-                    TileObjectFactory[maze[s]](new Point(s.X, s.Y)))));
+            var entities = entitiesGenerators
+                .Aggregate(SigmaMap.Empty<TileObject>(maze.Size), 
+                (m, g) => m.Merge(g.Spawn(maze)));
+
+            var tiles = SigmaIndex.Square(mapSize)
+                .Select(s => new Tile(s.X, s.Y, terrainMap[s],
+                    maze[s] == MazeCell.Empty ? entities[s] : new Impassable(s)));
+
+            return new Map(size, size, tiles);
         }
-
-        private Dictionary<MazeCell, Func<Point, TileObject>> TileObjectFactory
-            = new Dictionary<MazeCell, Func<Point, TileObject>>
-            {
-                { MazeCell.Wall, p => new Impassable(p) },
-                { MazeCell.Empty, p => null },
-            };
     }
 }

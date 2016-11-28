@@ -14,17 +14,16 @@ namespace HexModelTesting
         [Test]
         public void AddGoodTerrain()
         {
-            TileTerrain t = new TileTerrain(TerrainType.Marsh);
+            TileTerrain t = TileTerrain.Marsh;
             Assert.AreEqual(t.TravelCost, 1.75, 0.0001);
-            Assert.AreEqual(t.TerrainType.ToString(), "Marsh");
         }
 
         [Test]
         public void EditCorrectlyFixesTravelCost()
         {
-            var t = new TileTerrain(TerrainType.Grass);
+            var t = TileTerrain.Grass;
             Assert.AreEqual(t.TravelCost, 1, 0.0001);
-            t.TerrainType = TerrainType.Arid;
+            t = TileTerrain.Arid;
             Assert.AreEqual(t.TravelCost, 1.25, 0.0001);
         }
     }
