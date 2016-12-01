@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using CVARC.V2;
+using UnityEngine;
 
 
-namespace HoMM.HoMMEngine {
-    public interface IHoMMEngine {
+namespace HoMM.HommEngine {
+    public interface IHommEngine : IEngine {
         GameObject CreateObject(string id, MapObject obj);
         void DeleteObject(string id);
     }

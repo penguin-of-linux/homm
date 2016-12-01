@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using UnityEngine;
 
-namespace HoMM.HoMMEngine {
+namespace HoMM.HommEngine {
     public static class MapUnityConnecter {
-        private static HoMMEngine engine;
+        private static HommEngine engine;
         private const float hexHeight = 1; // !
         private static Dictionary<MapObject, int> objects = new Dictionary<MapObject, int>() {
             {MapObject.Mine, 0 },
@@ -14,7 +14,7 @@ namespace HoMM.HoMMEngine {
             {MapObject.NeutralArmy, 0 }
         };
         private static Dictionary<string, Color> playersColors = new Dictionary<string, Color>();
-        public static void Connect(Map map, HoMMEngine e, string[] players) {
+        public static void Connect(Map map, HommEngine e, string[] players) {
             engine = e;
 
             playersColors[players[0]] = Color.red;

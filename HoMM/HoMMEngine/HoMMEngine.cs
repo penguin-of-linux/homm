@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-namespace HoMM.HoMMEngine {
-    public class HoMMEngine : IHoMMEngine {//setspeed(enum), commonengine, coords, del color
+namespace HoMM.HommEngine {
+    public class HommEngine : IHommEngine {//setspeed(enum), commonengine, coords, del color
         private Dictionary<string, GameObject> prefabs = new Dictionary<string, GameObject>() {
             {"hex",  Resources.Load<GameObject>("hex")}
         };

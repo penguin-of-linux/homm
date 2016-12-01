@@ -1,4 +1,4 @@
-﻿namespace HoMM.HoMMEngine {
+﻿namespace HoMM.HommEngine {
     public enum MapObject {
         Dwelling,
         //Garrison,
