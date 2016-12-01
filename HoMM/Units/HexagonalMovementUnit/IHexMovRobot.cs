@@ -6,7 +6,7 @@ using System.Text;
 
 namespace HoMM.Units.HexagonalMovementUnit
 {
-    interface IHexMovRobot
+    interface IHexMovRobot : IActor
     {
         Vector2i Location { get; set; }
         double VelocityModifier { get; }
