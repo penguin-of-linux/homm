@@ -1,6 +1,5 @@
 ﻿using CVARC.V2;
-using HoMM.Actor;
-using HoMM.Commands;
+using HoMM.Hero;
 using HoMM.World;
 using System;
 using System.Collections.Generic;

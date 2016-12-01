@@ -1,5 +1,4 @@
 ﻿using CVARC.V2;
-using HoMM.Commands;
 using HoMM.Rules;
 using HoMM.Sensors;
 using HoMM.Units.HexagonalMovementUnit;
@@ -9,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace HoMM.Actor
+namespace HoMM.Hero
 {
     class HeroRobot : Robot<HommWorld, HommSensorData, HommCommand, HommRules>,
         IHexMovRobot

@@ -1,6 +1,5 @@
 ﻿using CVARC.V2;
-using HoMM.Commands;
-using HoMM.Units;
+using HoMM.Hero;
 using HoMM.Units.HexagonalMovementUnit;
 using System;
 using System.Collections.Generic;
