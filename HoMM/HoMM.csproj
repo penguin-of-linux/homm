@@ -43,6 +43,10 @@
     <Reference Include="CVARC.Core">
       <HintPath>..\Libraries\CVARC.Core.dll</HintPath>
     </Reference>
+    <Reference Include="nunit.framework, Version=3.5.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.3.5.0\lib\net35\nunit.framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
@@ -58,6 +62,10 @@
   <ItemGroup>
     <Compile Include="Hero\HeroRobot.cs" />
     <Compile Include="Common\Vector2i.cs" />
+    <Compile Include="HoMMEngine\HoMMEngine.cs" />
+    <Compile Include="HoMMEngine\IHommEngine.cs" />
+    <Compile Include="HoMMEngine\MapObject.cs" />
+    <Compile Include="HoMMEngine\MapUnityConnecter.cs" />
     <Compile Include="Model\Combat.cs" />
     <Compile Include="Generators\Common\ISigmaMap.cs" />
     <Compile Include="Generators\Common\MapSize.cs" />
@@ -115,12 +123,18 @@
     <Compile Include="Units\HexagonalMovementUnit\IHexMovRules.cs" />
     <Compile Include="World\HommWorld.cs" />
     <Compile Include="World\HommWorldState.cs" />
+    <Compile Include="World\MapHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Grid.jpg" />
     <Content Include="GridRules.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
