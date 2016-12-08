@@ -6,6 +6,7 @@
         NeutralArmy,
         ResourcesPile,
         Hexagon,
-        Flag
+        Flag,
+        Hero
     }
 }

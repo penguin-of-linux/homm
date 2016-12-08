@@ -62,10 +62,12 @@
   <ItemGroup>
     <Compile Include="Hero\HeroRobot.cs" />
     <Compile Include="Common\Vector2i.cs" />
-    <Compile Include="HoMMEngine\HoMMEngine.cs" />
-    <Compile Include="HoMMEngine\IHommEngine.cs" />
-    <Compile Include="HoMMEngine\MapObject.cs" />
-    <Compile Include="HoMMEngine\MapUnityConnecter.cs" />
+    <Compile Include="HommEngine\Directions.cs" />
+    <Compile Include="HommEngine\HommEngine.cs" />
+    <Compile Include="HommEngine\IHommEngine.cs" />
+    <Compile Include="HommEngine\MapObject.cs" />
+    <Compile Include="HommEngine\MapUnityConnecter.cs" />
+    <Compile Include="HommEngine\TerrainType.cs" />
     <Compile Include="Model\Combat.cs" />
     <Compile Include="Generators\Common\ISigmaMap.cs" />
     <Compile Include="Generators\Common\MapSize.cs" />
@@ -136,6 +138,9 @@
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy_dll.cmd</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
