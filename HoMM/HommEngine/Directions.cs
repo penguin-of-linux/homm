@@ -1,5 +1,7 @@
-﻿namespace HoMM.HommEngine {
-    public enum Directions {
+﻿namespace HoMM.HommEngine
+{
+    public enum Directions
+    {
         Up,
         RightUp,
         RightDown,

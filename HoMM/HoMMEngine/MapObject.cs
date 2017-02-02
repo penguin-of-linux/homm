@@ -1,5 +1,7 @@
-﻿namespace HoMM.HommEngine {
-    public enum MapObject {
+﻿namespace HoMM.HommEngine
+{
+    public enum MapObject
+    {
         Dwelling,
         //Garrison,
         Mine,
